@@ -19,6 +19,36 @@ Unofficial community plugin; independently maintained and not endorsed by DeepSe
 **Default: observe. Opt-in: pause.** The plugin requires no separate account,
 API key or network connection. Installing dependencies requires registry access.
 
+## Real problems, tested boundaries
+
+If DSH keeps submitting the **same invalid tool call**, Pause mode gives you a
+stopping point to inspect and fix it. Users have reported this with missing
+arguments, invalid edits and unavailable tools. A reminder alone did not stop
+the retries in some of those reports.
+
+We inspected seven public reports and tested their relevant failure patterns on
+**DSH 0.2.0-rc.2, 2026-10-02**. The counts below are **our bounded experiments**,
+not measurements of the original users' sessions.
+
+| Public report | What we verified | Result with Pause |
+| --- | --- | --- |
+| [Missing `run_code` description, #1093](https://github.com/deepseek-ai/deepseek-harness/discussions/1093): author reports 53 rejected calls | Identical incomplete arguments through DSH's real schema validator | **6 → 3 calls**; changing the code each time is not caught |
+| [Invalid Edit retries, #6370](https://github.com/deepseek-ai/deepseek-harness/discussions/6370#discussioncomment-18407743): old and new strings were identical | DSH's real `edit` validator rejects the repeated edit before file access | **6 → 3 calls**; no files accessed |
+| [Empty tool name, #4370](https://github.com/deepseek-ai/deepseek-harness/discussions/4370): repeated unknown-tool failures | Repeated empty names through DSH's tool registry | **6 → 3 calls**; the old streaming-parser bug itself was not replayed |
+| [Expired MCP session, #3489](https://github.com/deepseek-ai/deepseek-harness/discussions/3489): repeated session errors | Real MCP client against a local server returning the reported JSON-RPC error | **6 → 3 calls** when consecutive; successes between errors reset the count |
+| [Bash permission loop, #6701](https://github.com/deepseek-ai/deepseek-harness/discussions/6701) | The reported same-mode permission requests are accepted by the current version | **Old failure did not reproduce**; a related invalid escalation does pause |
+| [Promises without calls, #8581](https://github.com/deepseek-ai/deepseek-harness/discussions/8581) | Bounded repeated assistant text, no tool execution | **Not detected** |
+| [Tool markup returned as text, #8509](https://github.com/deepseek-ai/deepseek-harness/discussions/8509) | Synthetic tool-looking markup in an ordinary text response | **Not detected**; no native tool result reaches the guard |
+
+These checks use a **scripted model**, real DSH validators/agent loop, and a local
+MCP protocol fixture. They require no API key. They do not replay original
+sessions or prove production savings. In the caught cases, model requests also
+fall from 7 to 3; Observe keeps all 6 calls and adds a notice.
+
+This guard is for identical consecutive **tool errors**. Successful repeated
+searches, ordinary Bash exit-code failures, changing calls and text loops need a
+different approach. See [all 12 scenarios, methodology and reproduction instructions](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/reported-cases.md).
+
 ## Install in your DSH Web
 
 Requires an existing **DSH Web 0.2.0-rc.2** installation on **Node.js 24**.

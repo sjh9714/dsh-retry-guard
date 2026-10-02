@@ -7,6 +7,8 @@ for (const [scenario, error] of [
   ['missing-description', /description/],
   ['escalation-empty-justification', /invalid justification: expected a non-empty sentence/],
   ['expired-mcp-session', /Unknown or expired MCP session/],
+  ['identical-edit', /old_string and new_string must differ/],
+  ['empty-tool-name', /Error: unknown tool/],
 ] as const) {
   test(`${scenario}: real DSH error boundary, baseline/observe/pause and human resumption`, { timeout: 20_000 }, async () => {
     for (const mode of ['disabled', 'observe', 'pause'] as const) {
@@ -20,6 +22,7 @@ for (const [scenario, error] of [
         assert.equal(summary.paused, mode === 'pause')
         assert.equal(summary.notices, mode === 'disabled' ? 0 : 1)
         assert.equal(summary.shellExecutions, 0)
+        assert.equal(fixture.filesystemAccesses(), 0)
         assert.equal(summary.mcpRequests, scenario === 'expired-mcp-session' ? count : 0)
         for (const event of results(agent)) assert.match(JSON.stringify(event.data.message), error)
         assert.doesNotMatch(JSON.stringify(notices(agent)), /fixture-private|Private prompt marker|console\.log|pwd &&/)
@@ -82,12 +85,14 @@ test('changing code with the same missing description does not meet the identica
   } finally { await fixture.close() }
 })
 
-test('bounded repeated text without tool calls produces no guard notice or pause', async () => {
-  const fixture = await reportedCase('text-only', 'pause')
-  try {
-    assert.equal(fixture.summary.toolCalls, 0)
-    assert.equal(fixture.summary.modelRequests, 1)
-    assert.equal(fixture.summary.notices, 0)
-    assert.equal(fixture.summary.paused, false)
-  } finally { await fixture.close() }
-})
+for (const scenario of ['text-only', 'markup-as-text'] as const) {
+  test(`${scenario}: bounded text without tool calls produces no guard notice or pause`, async () => {
+    const fixture = await reportedCase(scenario, 'pause')
+    try {
+      assert.equal(fixture.summary.toolCalls, 0)
+      assert.equal(fixture.summary.modelRequests, 1)
+      assert.equal(fixture.summary.notices, 0)
+      assert.equal(fixture.summary.paused, false)
+    } finally { await fixture.close() }
+  })
+}

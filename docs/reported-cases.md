@@ -14,6 +14,9 @@ establish adoption, savings, or that every original incident would be stopped.
 | [Bash permissions, #6701](https://github.com/deepseek-ai/deepseek-harness/discussions/6701), Sep 15 | On 0.1.5-rc.1, author reports 11 failed Bash calls despite a repeat warning. The command stayed the same, but justification strings and errors changed. | Exercise today's Bash validation and same-mode permission handling. Do not assume the old errors still exist. |
 | [Expired MCP session, #3489](https://github.com/deepseek-ai/deepseek-harness/discussions/3489), Aug 20 | Author reports six MCP errors among 67 calls in one turn and six among 29 in another. | Return the reported JSON-RPC error through the actual MCP client; compare consecutive errors with errors separated by successful calls. |
 | [Repeated text, #8581](https://github.com/deepseek-ai/deepseek-harness/discussions/8581), Oct 1 UTC | Author describes repeated promises to check Git status without a tool call. | Emit a bounded repeated text response; confirm that a tool-result detector cannot intervene. |
+| [Invalid Edit retries, #6370 comment](https://github.com/deepseek-ai/deepseek-harness/discussions/6370#discussioncomment-18407743), Sep 12 | On 0.1.5-rc.2 with local Qwen/TabbyAPI, the author reports repeatedly submitting identical old/new edit strings despite a deterministic rejection. No exact count is given. | Submit identical strings through the current native `edit` validator, with a sentinel blocking filesystem access. |
+| [Empty tool name, #4370](https://github.com/deepseek-ai/deepseek-harness/discussions/4370), Aug 24 | On 0.1.1-rc.2, author reports null streaming deltas overwriting tool names, leading to repeated unknown-tool failures. | Send an empty tool name to the current registry. Valid, distinct call IDs isolate the downstream error; the original parser and empty-ID corruption are not reproduced. |
+| [Tool markup as text, #8509](https://github.com/deepseek-ai/deepseek-harness/discussions/8509), Sep 30 | On 0.1.7-rc.2 with a third-party endpoint and custom plugins, the author reports tool-looking markup appearing as text. No deterministic clean-stock reproducer is supplied. | Emit synthetic tool-looking text, not captured provider data. Confirm this detector has no native tool error to count. |
 
 The counts above are the authors' reports, not our measurements. Original session
 archives were not replayed, and the exact ordering of all MCP calls is unknown.
@@ -28,7 +31,8 @@ pnpm reproduce:reports
 pnpm test
 ```
 
-The first command measures nine scenarios in Disabled, Observe and Pause modes.
+The first command measures twelve scenarios in Disabled, Observe and Pause modes
+(36 scenario/mode combinations).
 It prints counts and writes `artifacts/reported-cases.json` containing only
 scenario labels, counts, mode/version and time. It does not export raw arguments,
 errors, prompts, local connection URLs or session records.
@@ -42,6 +46,11 @@ an ephemeral loopback port and deliberately returns the reported error. It is
 not a real expired production session, and this is not a test of all reconnect
 or session-expiration paths. `run_code` execution is guarded by a sentinel: the
 missing-description cases must fail before program execution.
+The native filesystem tool's edit validator is real; its filesystem service is
+a sentinel, and the test asserts that path resolution is never reached. No
+user files are read or changed. Empty-tool-name tests use the actual registry
+error path. Text fixtures finish on their own and do not simulate an endless
+stream or the underlying provider fault.
 
 ## Measured results
 
@@ -54,18 +63,23 @@ a paused script never starts that next request.
 | Identical `run_code`, missing description | 6 / 7 | **3 / 3** | Paused on real schema errors |
 | Empty justification requesting wider permissions from read-only | 6 / 7 | **3 / 3** | Paused before any shell execution |
 | Identical MCP arguments and JSON-RPC error | 6 / 7 | **3 / 3** | Paused after three actual local MCP requests |
+| Identical old/new strings in `edit` | 6 / 7 | **3 / 3** | Paused on real edit validation errors; zero file access |
+| Empty tool name, identical arguments | 6 / 7 | **3 / 3** | Paused on real unknown-tool errors |
 | Already-effective permission, empty justification | 6 / 7 | 6 / 7 | Accepted by current DSH; no error to count |
 | Already-effective permission, valid justification | 6 / 7 | 6 / 7 | Accepted by current DSH; no error to count |
 | Bash exit code 1 | 6 / 7 | 6 / 7 | DSH returns a normal tool result, not `isError` |
 | Six MCP errors interleaved with successes | 12 / 13 | 12 / 13 | Each success resets the streak |
 | Missing description, different code each time | 6 / 7 | 6 / 7 | Changed arguments reset the streak |
 | Repeated text, no tool call | 0 / 1 | 0 / 1 | Outside the detector; fixture finishes on its own |
+| Tool-looking markup in assistant text | 0 / 1 | 0 / 1 | Text is not a native tool call or result |
 
 Observe retains the Disabled counts and adds one notice in each of the first
-three scenarios. Pause adds one notice there. The remaining scenarios emit no
+five scenarios. Pause adds one notice there. The remaining scenarios emit no
 guard notices in either mode. Tests also verify that all original tool results
 survive, private fixture markers stay out of notices, and a new human message
 admits a successful repaired native call without replaying the failed call.
+That resumption check uses a separate successful probe tool. It verifies the
+human-resumption boundary, not repair of each original failure or MCP reconnection.
 
 ## What changed our assessment
 
@@ -89,9 +103,16 @@ production behavior was not expanded. The strongest supported use is a repeated,
 unchanged validation or MCP tool error. Broader loop protection remains a
 different policy. The [alternatives](alternatives.md) may fit that need better.
 
+The original post in #6370 also describes repetitive searches. Successful
+searches are outside this failure-only detector; the positive test corresponds
+specifically to the author's later invalid-edit comment. Likewise, catching an
+empty-name registry error does not establish that the provider bug in #4370
+still exists today. Reports #8581 and #8509 illustrate an entirely different
+boundary: without tool results, this guard cannot intervene.
+
 The next unanswered question is whether users encounter this exact narrow
 pattern often enough to keep the plugin installed. The [five-person trial](trial.md)
-has not started; technical reproduction does not replace that gate. We have not
+is recruiting, with no completed trials recorded; technical reproduction does not replace that gate. We have not
 run live paid models, replayed the original sessions, or rerun the Web installation
 matrix for these new test-only fixtures. Prior Web checks are recorded in
 [verification](verification.md).

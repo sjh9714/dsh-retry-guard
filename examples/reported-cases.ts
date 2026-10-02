@@ -1,6 +1,6 @@
 import { createServer } from 'node:http'
 import { once } from 'node:events'
-import type { Context } from '@deepseek-ai/cordis'
+import { Service, type Context } from '@deepseek-ai/cordis'
 import type { StreamChunk } from '@deepseek-ai/dsh-llm'
 import PtcRuntime from '@deepseek-ai/dsh-ptc-runtime'
 import ShellExecutor from '@deepseek-ai/dsh-shell'
@@ -8,6 +8,7 @@ import type { ShellExecRequest, ShellExecSpec, ShellExecution } from '@deepseek-
 import * as ShellEnv from '@deepseek-ai/dsh-shell-env'
 import SandboxPolicy from '@deepseek-ai/dsh-sandbox-policy'
 import * as BashTool from '@deepseek-ai/dsh-tool-bash'
+import * as FsTool from '@deepseek-ai/dsh-tool-fs'
 import * as McpClient from '@deepseek-ai/dsh-mcp-client'
 import { call, done, harness, notices, results, run } from './fixture.ts'
 
@@ -17,6 +18,16 @@ class UnusedPtcRuntime extends PtcRuntime {
   readonly isolation = 'fixture-sentinel'
   resolve(): never { throw new Error('Unexpected PTC execution: fixture only tests validation') }
   async run(): Promise<never> { throw new Error('Unexpected PTC execution') }
+}
+
+/** The real edit validator must reject identical strings before any file access. */
+class UnusedFilesystem extends Service {
+  accesses = 0
+  constructor(ctx: Context) { super(ctx, 'fs') }
+  resolve(): never {
+    this.accesses++
+    throw new Error('Unexpected filesystem access: fixture only tests validation')
+  }
 }
 
 /** Replace OS execution only. The bash schema, policy and approval path are real. */
@@ -93,6 +104,7 @@ export const scenarioNames = [
   'missing-description', 'escalation-empty-justification', 'same-mode-empty-justification',
   'same-mode-permission', 'nonzero-exit',
   'expired-mcp-session', 'interleaved-mcp-errors', 'changed-code', 'text-only',
+  'identical-edit', 'empty-tool-name', 'markup-as-text',
 ] as const
 export type Scenario = typeof scenarioNames[number]
 export type GuardMode = 'disabled' | 'observe' | 'pause'
@@ -100,6 +112,11 @@ export type GuardMode = 'disabled' | 'observe' | 'pause'
 function scriptFor(scenario: Scenario): StreamChunk[][] {
   switch (scenario) {
     case 'missing-description': return repeated('run_code', missingDescription)
+    case 'identical-edit': return repeated('edit', {
+      file_path: '/fixture/private.txt', old_string: 'fixture-private-text', new_string: 'fixture-private-text',
+    })
+    // Reproduce the downstream registry error, not the old provider's null-delta parser.
+    case 'empty-tool-name': return repeated('', { command: 'fixture-private-command' })
     case 'escalation-empty-justification':
     case 'same-mode-empty-justification': return repeated('bash', bashArgs)
     case 'same-mode-permission': return repeated('bash', { ...bashArgs, justification: 'Read directory and Git status.' })
@@ -112,8 +129,11 @@ function scriptFor(scenario: Scenario): StreamChunk[][] {
     case 'changed-code': return [
       ...Array.from({ length: 6 }, (_, i) => call(`changed-${i}`, { code: `console.log(${i})` }, 'run_code')), done(),
     ]
-    case 'text-only': {
-      const text = 'I will check Git status. '.repeat(6)
+    case 'text-only':
+    case 'markup-as-text': {
+      // Synthetic markup in a text block, not a captured provider response.
+      const text = (scenario === 'text-only' ? 'I will check Git status. '
+        : '<tool_call name="probe">{"fixed":true}</tool_call>').repeat(6)
       return [[{ type: 'block-start', index: 0, blockType: 'text' },
         { type: 'text-delta', index: 0, text },
         { type: 'block-end', index: 0, block: { type: 'text', text } },
@@ -125,12 +145,18 @@ function scriptFor(scenario: Scenario): StreamChunk[][] {
 export async function reportedCase(scenario: Scenario, mode: GuardMode) {
   const fixture = await harness(scriptFor(scenario), { mode: mode === 'disabled' ? 'observe' : mode })
   let mcp: Awaited<ReturnType<typeof expiredMcpServer>> | undefined
+  let filesystem: UnusedFilesystem | undefined
   const close = async () => {
     try { await fixture.ctx.fiber.dispose() } finally { await mcp?.close() }
   }
   try {
     if (mode === 'disabled') await fixture.plugin.dispose()
     const ctx: Context = fixture.ctx
+    if (scenario === 'identical-edit') {
+      await ctx.plugin(UnusedFilesystem)
+      filesystem = ctx.get('fs') as unknown as UnusedFilesystem
+      await ctx.plugin(FsTool, {})
+    }
     if (scenario === 'missing-description' || scenario === 'changed-code') {
       await ctx.plugin(UnusedPtcRuntime)
       fixture.agent.ctx.tools.presentAs('both')
@@ -159,6 +185,6 @@ export async function reportedCase(scenario: Scenario, mode: GuardMode) {
       shellExecutions: ctx.get('shell') ? (ctx.shell as RecordingShell).executions : 0,
       mcpRequests: mcp?.calls() ?? 0,
     }
-    return { ...fixture, summary, close }
+    return { ...fixture, summary, filesystemAccesses: () => filesystem?.accesses ?? 0, close }
   } catch (error) { await close(); throw error }
 }
