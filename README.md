@@ -170,6 +170,8 @@ runs type checks, tests, the build and both keyless terminal examples on Node.js
 This is a validation alpha. We are looking for five DSH Web users to try installing
 it and report whether they still use it after 48 hours. See the
 [five-person trial](docs/trial.md) for the steps and a public feedback form.
+The [DSH community invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
+has the demo and participation details.
 Feature expansion and a broader launch wait until at least three people install
 within five minutes and confirm continued use. Stars and downloads do not count
 as installation or retention evidence.

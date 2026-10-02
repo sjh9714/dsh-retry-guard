@@ -1,6 +1,8 @@
 # First-week trial and launch gate
 
-**Status: not started. No participants or retention results have been recorded.**
+**Status: recruiting. No completed installation trials or retention results have been recorded.**
+[Volunteer invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
+was posted on 2026-10-02. Participation is opt-in through the installation issue form.
 The scripted demo validates mechanics, not usefulness. Do not expand features or
 claim product validation until this gate has been reviewed.
 
@@ -45,9 +47,9 @@ A [packaged public alpha](https://github.com/sjh9714/dsh-retry-guard/releases/ta
 provides the verified archive and demo to volunteers, without requiring a source
 build. It was published on **2026-10-02** and is labeled as an unvalidated alpha.
 The public download has passed an isolated DSH Web installation and core-flow
-check. npm publication is still pending. The next step is to invite five opt-in
-installation trials in the DSH plugin community.
-No posts or submissions have been made yet. Broader distribution and feature expansion wait
+check. npm publication is still pending. One introduction and volunteer invitation
+was published in the DSH **Show Your Plugins!** category on 2026-10-02.
+No awesome-list submission or X post has been made. Broader distribution and feature expansion wait
 for the trial result: a DSH use case, an eligible awesome-list submission, then
 a short English demo on X from an explicitly selected account.
 

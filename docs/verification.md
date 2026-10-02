@@ -119,6 +119,7 @@ The runtime detector resets on host/plugin restart and does not reconstruct a
 pause latch from history. No guarantee is made about cancelling already-running
 parallel work.
 
-The five-person installation and 48-hour retention trial has not started. No
-npm package, community post or awesome-list PR has been published.
+The [volunteer invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
+is published, but no completed installation trials or 48-hour retention results
+have been recorded. No npm package or awesome-list PR has been published.
 Feature expansion remains gated on the [trial](trial.md).
