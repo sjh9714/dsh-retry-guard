@@ -1,0 +1,56 @@
+name: Installation trial
+description: Share installation time and return to the same issue after 48 hours.
+title: '[Trial] Installation and 48-hour follow-up'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for trying this alpha. This issue is public and participation is optional.
+        Share only the fields below, not API keys, prompts, raw tool arguments or full session logs.
+        Please update this same issue after 48 hours. No automatic tracking is used.
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: DSH version, Node version, operating system and browser.
+      placeholder: DSH Web 0.2.0-rc.2, Node 24, macOS, Chrome
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Retry Guard version
+      placeholder: 0.1.0-alpha.1
+    validations:
+      required: true
+  - type: input
+    id: install-time
+    attributes:
+      label: Minutes to a working plugin
+      description: Start when you open the installation instructions. Include finding settings and running the keyless demo. Say 'could not install' if blocked.
+    validations:
+      required: true
+  - type: textarea
+    id: assistance
+    attributes:
+      label: Help needed or installation friction
+      description: Write 'none' if you completed the instructions without help.
+    validations:
+      required: true
+  - type: dropdown
+    id: retained-use
+    attributes:
+      label: After at least 48 hours
+      options:
+        - 'Pending — 48 hours have not passed'
+        - 'Still enabled and used in my work'
+        - 'Still enabled but not used'
+        - 'Disabled or removed'
+        - 'Could not install'
+    validations:
+      required: true
+  - type: textarea
+    id: follow-up
+    attributes:
+      label: Follow-up time, false pauses and reason to keep or remove
+      description: At follow-up, record roughly how many hours have passed and what happened. Tool names are optional; no private task details are needed.

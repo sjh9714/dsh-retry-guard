@@ -1,0 +1,30 @@
+name: Bug report
+description: Report an installation problem, false detection or failure to pause.
+title: '[Bug] '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Issues are public. Remove secrets, local access URLs, private prompts and raw session logs.
+        The small Retry Guard report can help, but review its tool names and IDs before sharing.
+  - type: input
+    id: environment
+    attributes:
+      label: Versions and environment
+      description: Retry Guard, DSH, Node, operating system and browser.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and expected behavior
+      description: Include the mode, failure limit, excluded tools and a small non-sensitive example.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Explain what happened and whether the isolated keyless example reproduces it.
+    validations:
+      required: true

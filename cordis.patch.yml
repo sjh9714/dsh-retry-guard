@@ -1,0 +1,7 @@
+- insert:
+    - id: dsh-retry-guard
+      name: dsh-retry-guard
+      config:
+        mode: observe
+        failureLimit: 3
+        excludeTools: []
