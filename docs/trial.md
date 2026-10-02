@@ -40,8 +40,8 @@ once its submission rules are met. The repository was created at
 **2026-10-03 02:29:17 UTC (11:29:17 Asia/Seoul)**. Review existing entries for overlap
 and recheck the rules at submission time. A prepared entry is not an accepted listing.
 
-A short English X post is prepared locally; no X account has been selected and
-no post there has been published. Share meaningful verified changes rather than
+Distribution focuses on GitHub, the DSH community thread and the plugin catalog.
+X is excluded from this launch. Share meaningful verified changes rather than
 repeating the same announcement. There is no scheduled posting, automatic
 follow-up, paid promotion or unsolicited private outreach.
 
