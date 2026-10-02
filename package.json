@@ -1,6 +1,6 @@
 {
   "name": "dsh-retry-guard",
-  "version": "0.1.0-alpha.1",
+  "version": "0.1.0-alpha.2",
   "description": "Observe repeated identical tool failures and optionally pause before DSH's next model step.",
   "type": "module",
   "license": "MIT",

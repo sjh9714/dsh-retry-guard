@@ -2,16 +2,16 @@
 
 Pause before the next model step after three identical DSH tool errors.
 
-![Three identical failures pause the next step; a new instruction resumes after repair.](docs/assets/demo.gif)
+![Three identical failures pause the next step; a new instruction resumes after repair.](https://raw.githubusercontent.com/sjh9714/dsh-retry-guard/main/docs/assets/demo.gif)
 
-[20-second recording](docs/assets/demo.mp4): real DSH Web, **scripted model**, no API key.
+[20-second recording](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/assets/demo.mp4): real DSH Web, **scripted model**, no API key.
 The demonstration uses a deliberately failing local tool, not a production AI model.
 
-In DSH, open **Plugins → Add plugin**, paste this URL, click **Install**, then
+In DSH, open **Plugins → Add plugin**, enter this package name, click **Install**, then
 **Enable now**:
 
 ```text
-https://github.com/sjh9714/dsh-retry-guard/releases/download/v0.1.0-alpha.1/dsh-retry-guard-0.1.0-alpha.1.tgz
+dsh-retry-guard@alpha
 ```
 
 **Supported target: DSH Web 0.2.0-rc.2 · Node.js 24.** Early prototype, MIT.
@@ -23,9 +23,10 @@ API key or network connection. Installing dependencies requires registry access.
 
 Requires an existing **DSH Web 0.2.0-rc.2** installation on **Node.js 24**.
 The released archive contains built JavaScript. You do not need Git, pnpm, a
-source checkout, or a build to install it. There is no npm release yet.
+source checkout, or a build to install it. The `alpha` tag selects the current
+prerelease. To pin this version, enter `dsh-retry-guard@0.1.0-alpha.2`.
 
-1. Open **Plugins → Add plugin**. Paste the full archive URL above into
+1. Open **Plugins → Add plugin**. Enter `dsh-retry-guard@alpha` into
    **Package name or address** and click **Install**.
 2. Wait for the installed screen, then click **Enable now**. Installing the
    files alone does not enable the plugin. Keep this screen open until enabled.
@@ -36,26 +37,32 @@ source checkout, or a build to install it. There is no npm release yet.
 5. Continue working in your normal DSH conversation. You do not need to invoke
    Retry Guard with a command.
 
-This screen-based installation and immediate activation were verified in a fresh
-DSH profile on 2026-10-02. The same installation passed the observe, pause and
-resume checks. See [what was tested](docs/verification.md#installation-usability-check).
+See [verification scope](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/verification.md) for the installation checks.
 
-<details>
-<summary>Alternative: install from the terminal</summary>
+### Terminal installation
 
-Download the archive and `SHA256SUMS` from the
-[alpha release](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1).
-From the download directory:
+```sh
+dsh plugin --profile web add dsh-retry-guard@alpha
+```
+
+Restart DSH Web after a CLI installation, then open the settings as above.
+Use DSH's plugin manager to install and activate the bundle; a plain
+`npm install` in an unrelated project does not activate it in DSH.
+
+### GitHub download alternative
+
+The earlier [alpha.1 archive](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1)
+remains available with identical detector, host and browser code. Download its
+`.tgz` and `SHA256SUMS`, then install it from the download directory:
 
 ```sh
 dsh plugin --profile web add ./dsh-retry-guard-0.1.0-alpha.1.tgz
 ```
 
-Restart DSH Web after a CLI installation, then open the settings as above.
 The archive's `dsh.bundle` manifest points to `cordis.patch.yml`; this is a
-package manifest field, not a separate file extension.
-
-</details>
+package manifest field, not a separate file extension. DSH 0.2.0-rc.2 does not
+automatically update installed plugins. To switch versions, uninstall the old
+bundle and install the desired version, then check its saved mode.
 
 ## What happens when a failure repeats?
 
@@ -70,18 +77,18 @@ same arguments. On the third consecutive failure:
 
 The plugin notices a repeated error; it does not work out or fix its cause.
 The notice currently gives record references, not a one-click inspector link.
-See the [error-record walkthrough](docs/demo.md#inspect-the-original-error).
+See the [error-record walkthrough](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/demo.md#inspect-the-original-error).
 
 You can watch the recording above without installing development tools. To run
 our exact keyless demonstration yourself, follow the separate
-[developer demo guide](docs/demo.md). Its scripted model and failing tool belong
+[developer demo guide](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/demo.md). Its scripted model and failing tool belong
 to the source checkout and are not included in the normal plugin installation.
 
 In that one deterministic fixture, Observe runs 6 tool calls / 7 model requests;
 Pause runs 3 / 3, followed by one successful call after a new repair instruction.
 These are fixture counts, not a general cost-saving claim. See
-[verification scope](docs/verification.md), [alternatives](docs/alternatives.md),
-and [reported failures and detection limits](docs/reported-cases.md).
+[verification scope](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/verification.md), [alternatives](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/alternatives.md),
+and [reported failures and detection limits](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/reported-cases.md).
 
 ## Behavior
 
@@ -151,7 +158,7 @@ mode, so check it before starting work.
 
 ## Development
 
-See [developer setup, keyless demo and Web checks](docs/demo.md).
+See [developer setup, keyless demo and Web checks](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/demo.md).
 
 The detector is in `src/core.ts`; the DSH adapter and durable notice are in
 `src/index.ts`; settings and the visible report are in `src/client/index.tsx`.
@@ -162,7 +169,7 @@ runs type checks, tests, the build and both keyless terminal examples on Node.js
 
 This is a validation alpha. We are looking for five DSH Web users to try installing
 it and report whether they still use it after 48 hours. See the
-[five-person trial](docs/trial.md) for the steps and a public feedback form.
+[five-person trial](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/trial.md) for the steps and a public feedback form.
 The [DSH community invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
 has the demo and participation details.
 Feature expansion and a broader launch wait until at least three people install

@@ -23,7 +23,8 @@ await writeFile(overlay, [
   '- id: llm-deepseek', '  disabled: true', '- id: llm-deepseek-account', '  disabled: true',
   '- id: llm-pi-ai', '  disabled: true',
 ].join('\n') + '\n')
-const archive = join(root, 'artifacts/dsh-retry-guard-0.1.0-alpha.1.tgz')
+const { version } = JSON.parse(await readFile(join(root, 'package.json'), 'utf8'))
+const archive = join(root, `artifacts/dsh-retry-guard-${version}.tgz`)
 const digest = createHash('sha256').update(await readFile(archive)).digest('hex').slice(0, 16)
 // pnpm may reuse the installed file dependency when an archive is overwritten
 // at the same path/version. Give each local build a content-addressed path.
