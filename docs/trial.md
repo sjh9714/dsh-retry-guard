@@ -41,10 +41,12 @@ downloads or positive comments.
 
 ## Validation alpha and subsequent launch
 
-A packaged public alpha can provide the verified archive and demo to volunteers.
-Source and build instructions are available in this repository; npm publication
-and a versioned release are still pending. Label any release as an unvalidated
-alpha and invite five opt-in installation trials in the DSH plugin community.
+A [packaged public alpha](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1)
+provides the verified archive and demo to volunteers, without requiring a source
+build. It was published on **2026-10-02** and is labeled as an unvalidated alpha.
+The public download has passed an isolated DSH Web installation and core-flow
+check. npm publication is still pending. The next step is to invite five opt-in
+installation trials in the DSH plugin community.
 No posts or submissions have been made yet. Broader distribution and feature expansion wait
 for the trial result: a DSH use case, an eligible awesome-list submission, then
 a short English demo on X from an explicitly selected account.
@@ -67,13 +69,18 @@ Proposed introduction, to use only with a real release link:
 Record values at days 7, 14 and 30 with dates and source windows. No telemetry or
 scheduled monitoring is built into this plugin.
 
-| Checkpoint | Stars / change | GitHub visitors (window) | Confirmed installations | Confirmed continuing users (denominator) |
+| Checkpoint (Asia/Seoul) | Stars / change | GitHub visitors (window) | Confirmed installations | Confirmed continuing users (denominator) |
 | --- | --- | --- | --- | --- |
-| Day 7 | Pending | Pending | Pending | Pending |
-| Day 14 | Pending | Pending | Pending | Pending |
-| Day 30 | Pending | Pending | Pending | Pending |
+| Release day · 2026-10-02 | 0 / baseline | 0 unique, API rolling 14-day view | 0 external users | 0 / 0 participants; rate undefined |
+| Day 7 · 2026-10-09 | Pending | Pending | Pending | Pending |
+| Day 14 · 2026-10-16 | Pending | Pending | Pending | Pending |
+| Day 30 · 2026-11-01 | Pending | Pending | Pending | Pending |
 
 Downloads are not people. Keep overlapping traffic windows separate rather than
 adding their unique visitors. Low traffic suggests improving presentation or
 distribution; traffic without installation/use suggests revisiting installation
 and the problem before adding features.
+
+The baseline is a release-day API snapshot; traffic reporting may lag. Our own
+verification downloads/installations do not count as external users. These dates
+are manual checkpoints, not scheduled monitoring.

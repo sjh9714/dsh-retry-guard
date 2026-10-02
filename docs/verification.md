@@ -1,7 +1,8 @@
 # Verification record
 
 Checked **2026-10-02, Asia/Seoul** for the local **0.1.0-alpha.1** prototype.
-This records local behavior, not a public release or real-user adoption.
+This records technical verification, including the public alpha archive below.
+It does not establish real-user adoption.
 
 ## Environment and evidence
 
@@ -84,6 +85,31 @@ needs ffmpeg. For install/restart/remove, use an isolated `DSH_HOME`, preserve a
 copy or digest of its configuration and session files, stop Web before CLI
 changes, then open Web and exercise the core behavior after each change.
 
+## Public alpha archive
+
+[v0.1.0-alpha.1](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1)
+was published as a GitHub prerelease on **2026-10-02 at 04:51 UTC** from
+`d0ea1fd989efd3524c9e946782b961c770118a49`. That revision's GitHub CI passed
+all 24 tests, the build, both keyless examples and distribution consistency.
+
+The 11-file archive has SHA-256:
+`517ecd9d8acdca2e35f0c0187e73766c106d7327b9ca437d4fc7f7e831849464`.
+Its built runtime is unchanged from the earlier Web/lifecycle-tested build.
+We downloaded the public archive and checksums without authentication, checked
+the bytes against the upload, and installed it into a new isolated DSH home.
+
+The actual Web flow passed at **04:58 UTC**: Observe produced 6 tool calls and
+7 model steps; Pause produced 3 calls and 3 steps; new human input admitted one
+successful repaired call. Original event records were preserved. Settings
+survived page reload, limit 1 was rejected and no browser errors occurred.
+The model remains scripted; this is not a production-model benchmark.
+
+The first check exposed a race in the browser verification script: the welcome
+overlay appeared after the sidebar, intercepting the first click. The script now
+handles that overlay during actionability checks, and the complete Web check
+passed. This test-only fix does not change the release archive or plugin runtime.
+The isolated verification server was stopped after the check.
+
 ## Not verified
 
 Other DSH versions, operating systems/browsers, provider-specific live models,
@@ -94,5 +120,5 @@ pause latch from history. No guarantee is made about cancelling already-running
 parallel work.
 
 The five-person installation and 48-hour retention trial has not started. No
-npm package, versioned release, community post or awesome-list PR has been
-published. Feature expansion remains gated on the [trial](trial.md).
+npm package, community post or awesome-list PR has been published.
+Feature expansion remains gated on the [trial](trial.md).

@@ -67,14 +67,11 @@ async function start(marker) {
 }
 
 try {
+  // The welcome overlay can arrive after the sidebar is already visible.
+  // Handle it during actionability checks instead of racing the two elements.
+  await page.addLocatorHandler(page.getByRole('button', { name: 'Continue', exact: true }),
+    async button => { await button.click() }, { times: 1 })
   await page.goto(address)
-  await Promise.race([
-    page.getByRole('button', { name: 'Continue', exact: true }).waitFor(),
-    page.getByRole('button', { name: 'Plugins', exact: true }).waitFor(),
-  ])
-  if (await page.getByRole('button', { name: 'Continue', exact: true }).isVisible()) {
-    await page.getByRole('button', { name: 'Continue', exact: true }).click()
-  }
   await settings('observe')
   // Invalid limits must not change the persisted profile.
   const patchPath = `${demoHome}/profiles/web/cordis.patch.yml`
