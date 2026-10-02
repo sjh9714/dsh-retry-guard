@@ -111,8 +111,9 @@ still exists today. Reports #8581 and #8509 illustrate an entirely different
 boundary: without tool results, this guard cannot intervene.
 
 The next unanswered question is whether users encounter this exact narrow
-pattern often enough to keep the plugin installed. The [five-person trial](trial.md)
-is recruiting, with no completed trials recorded; technical reproduction does not replace that gate. We have not
+pattern often enough to keep the plugin installed. We collect optional
+[installation and usage feedback](trial.md) while building in public. No completed
+user trials are recorded; technical reproduction does not establish adoption. We have not
 run live paid models, replayed the original sessions, or rerun the Web installation
 matrix for these new test-only fixtures. Prior Web checks are recorded in
 [verification](verification.md).

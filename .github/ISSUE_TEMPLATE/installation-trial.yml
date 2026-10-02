@@ -1,13 +1,13 @@
-name: Installation trial
-description: Share installation time and return to the same issue after 48 hours.
-title: '[Trial] Installation and 48-hour follow-up'
+name: Installation and usage feedback
+description: Share installation friction, useful catches, missed failures or continued use.
+title: '[Feedback] Installation and use'
 body:
   - type: markdown
     attributes:
       value: |
-        Thank you for trying this alpha. This issue is public and participation is optional.
+        Thank you for trying Retry Guard. This issue is public and participation is optional.
         Share only the fields below, not API keys, prompts, raw tool arguments or full session logs.
-        Please update this same issue after 48 hours. No automatic tracking is used.
+        A later update after 48 hours of use is welcome. No automatic tracking is used.
   - type: input
     id: environment
     attributes:
@@ -40,17 +40,18 @@ body:
   - type: dropdown
     id: retained-use
     attributes:
-      label: After at least 48 hours
+      label: Continued use
       options:
         - 'Pending — 48 hours have not passed'
         - 'Still enabled and used in my work'
         - 'Still enabled but not used'
         - 'Disabled or removed'
         - 'Could not install'
+        - 'Not reporting continued use'
     validations:
-      required: true
+      required: false
   - type: textarea
     id: follow-up
     attributes:
-      label: Follow-up time, false pauses and reason to keep or remove
-      description: At follow-up, record roughly how many hours have passed and what happened. Tool names are optional; no private task details are needed.
+      label: Useful catches, missed failures, false pauses or reason to keep or remove
+      description: Describe what happened without private task details. If returning later, say roughly how much time has passed. Tool names are optional.

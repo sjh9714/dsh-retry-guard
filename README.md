@@ -14,7 +14,7 @@ In DSH, open **Plugins → Add plugin**, enter this package name, click **Instal
 dsh-retry-guard@alpha
 ```
 
-**Supported target: DSH Web 0.2.0-rc.2 · Node.js 24.** Early prototype, MIT.
+**Supported target: DSH Web 0.2.0-rc.2 · Node.js 24.** MIT licensed.
 Unofficial community plugin; independently maintained and not endorsed by DeepSeek.
 **Default: observe. Opt-in: pause.** The plugin requires no separate account,
 API key or network connection. Installing dependencies requires registry access.
@@ -197,11 +197,17 @@ No dependency lifecycle scripts are needed for the detector tests.
 The [Check workflow](https://github.com/sjh9714/dsh-retry-guard/actions/workflows/ci.yml)
 runs type checks, tests, the build and both keyless terminal examples on Node.js 24.
 
-This is a validation alpha. We are looking for five DSH Web users to try installing
-it and report whether they still use it after 48 hours. See the
-[five-person trial](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/trial.md) for the steps and a public feedback form.
-The [DSH community invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
-has the demo and participation details.
-Feature expansion and a broader launch wait until at least three people install
-within five minutes and confirm continued use. Stars and downloads do not count
-as installation or retention evidence.
+## Building in public
+
+Try it in your normal DSH workflow and tell us what happened: did it catch a
+repeated failure, miss one, or pause useful work? Share a small non-sensitive
+example through [Issues](https://github.com/sjh9714/dsh-retry-guard/issues/new/choose)
+or the [DSH community thread](https://github.com/deepseek-ai/deepseek-harness/discussions/8628).
+Installation and continued-use feedback is welcome through the optional
+[feedback guide](https://github.com/sjh9714/dsh-retry-guard/blob/main/docs/trial.md).
+
+We publish reproducible findings, fixes and limitations as the project develops.
+Priorities come from concrete reports; no participant quota is required before
+sharing updates or improving the plugin. Confirmed real-user use is still
+unmeasured. Stars and downloads are tracked separately from installation and use.
+If this is useful to you, star the repository and follow its updates.

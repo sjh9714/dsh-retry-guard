@@ -1,74 +1,49 @@
-# First-week trial and launch gate
+# Build in public: feedback and distribution
 
-**Status: recruiting. No completed installation trials or retention results have been recorded.**
-[Volunteer invitation](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
-was posted on 2026-10-02. Participation is opt-in through the installation issue form.
-The scripted demo validates mechanics, not usefulness. Do not expand features or
-claim product validation until this gate has been reviewed.
+**Direction updated 2026-10-02:** public distribution and development proceed
+alongside user feedback. The previous five-person / three-pass launch gate is
+retired. Actual use still matters; it is not a prerequisite for publishing work.
+No completed external installation or continued-use reports are recorded yet.
 
-## Five installation trials
+## Share what happens
 
-Use five consenting DSH Web 0.2.0-rc.2 users, a packaged archive and the README.
-Record participant IDs P1–P5 in the aggregate worksheet, not personal details.
-Do not ask for API keys, full session exports or private prompts. Public GitHub
-feedback is linked to the contributor's GitHub account; it is not anonymous.
-Participation is optional and no automatic tracking is enabled.
+Install from npm using the [README](../README.md), then use Retry Guard in your
+normal DSH Web workflow. Feedback is optional and has no participant limit.
 
-Volunteers can open an **Installation trial** from this
-repository's **Issues → New issue** menu, then update the same issue after
-48 hours. No account beyond the one used for GitHub feedback is needed to report;
-the plugin itself needs no separate account. Do not post sensitive work details.
+- Report an installation problem, a useful catch, a missed repeated failure or a
+  false pause through [Issues](https://github.com/sjh9714/dsh-retry-guard/issues/new/choose).
+- For installation feedback, include the DSH and plugin versions, approximate
+  time to an enabled working setup, and any help needed. Optional developer-demo
+  setup time is separate from ordinary installation time.
+- If you keep using it, a later update to the same issue after about 48 hours
+  helps us understand whether it is useful. Installed-but-unused is distinct
+  from continued use; no follow-up means unknown, not a success or failure.
+- Do not share API keys, private prompts, raw tool arguments or full session logs.
+  Issues are public and linked to your GitHub account. No telemetry is enabled.
 
-1. Start the timer when the participant opens the installation instructions.
-2. Let them install and enable the plugin, find its settings, explain Observe
-   versus Pause, and save their chosen mode. Record time to that working setup
-   and any help required. The source-only [keyless demo](demo.md) is optional;
-   record its separate setup time if tried, not as ordinary plugin installation.
-3. Ask them to use it in their normal work only if comfortable. At 48 hours,
-   confirm whether it is still enabled **and has been used**, any false pauses,
-   and whether they would keep it. Installed-but-unused is not retained use.
-4. Count a pass only when installation took at most five minutes and use is
-   confirmed after 48 hours. Record missing follow-ups as unconfirmed.
+Prioritize reproducible installation and correctness problems, then proposals
+supported by a concrete workflow. Publish the supporting evidence and limitations
+with changes. Stars and downloads are not proof that a feature is useful.
 
-| ID | Install time | Help needed | Enabled + used at 48h | False pauses / reason removed | Pass |
-| --- | --- | --- | --- | --- | --- |
-| P1 | Pending | Pending | Pending | Pending | Pending |
-| P2 | Pending | Pending | Pending | Pending | Pending |
-| P3 | Pending | Pending | Pending | Pending | Pending |
-| P4 | Pending | Pending | Pending | Pending | Pending |
-| P5 | Pending | Pending | Pending | Pending | Pending |
+## Public distribution
 
-Continue the remaining development only if **at least 3 of 5** pass. If recruitment
-fails or fewer than three pass, stop feature expansion and review the problem,
-installation friction and alternatives. Do not replace missing trials with stars,
-downloads or positive comments.
+The repository, npm package, keyless reproduction and 20-second scripted-model
+Web demo are available. The [DSH community thread](https://github.com/deepseek-ai/deepseek-harness/discussions/8628)
+is the current place to introduce the project and discuss its use.
+The package's current published version remains `0.1.0-alpha.2`; installation
+uses `dsh-retry-guard@alpha`. Build-in-public messaging does not change the package
+version or imply that every DSH version is supported.
 
-## Validation alpha and subsequent launch
+Submit one entry to [awesome-dsh-plugin](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/blob/main/contributing.md)
+once its submission rules are met. The repository was created at
+2026-10-02 02:29:17 UTC; its one-day age requirement is met at
+**2026-10-03 02:29:17 UTC (11:29:17 Asia/Seoul)**. Review existing entries for overlap
+and recheck the rules at submission time. A prepared entry is not an accepted listing.
 
-A [packaged public alpha](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1)
-provides the verified archive and demo to volunteers, without requiring a source
-build. It was published on **2026-10-02** and is labeled as an unvalidated alpha.
-The public download has passed an isolated DSH Web installation and core-flow
-check. npm alpha.2 was published on 2026-10-02 and is the default installation
-route: `dsh-retry-guard@alpha`. A fresh Web installation by package name passed
-the same scripted core-flow checks. This is maintainer verification, not a
-participant trial. One introduction and volunteer invitation
-was published in the DSH **Show Your Plugins!** category on 2026-10-02.
-No awesome-list submission or X post has been made. Broader distribution and feature expansion wait
-for the trial result: a DSH use case, an eligible awesome-list submission, then
-a short English demo on X from an explicitly selected account.
-
-The [awesome-dsh-plugin contribution rules](https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/blob/main/contributing.md)
-must be checked again at submission time. The repository needs working code, an
-installable bundle, the `dsh-plugin` topic and at least one day of public history;
-submit the requested single plugin YAML through its review process.
-
-Proposed introduction, to use only with a real release link:
-
-> DSH Retry Guard watches consecutive identical tool failures. Observation is
-> the default; opt into pausing before the next model step. This 20-second demo
-> uses a scripted model in real DSH Web 0.2.0-rc.2 and needs no API key. Normal
-> successful polling continues. Send a new instruction after fixing the cause.
+A short English X post is prepared locally; no X account has been selected and
+no post there has been published. Share meaningful verified changes rather than
+repeating the same announcement. There is no scheduled posting, automatic
+follow-up, paid promotion or unsolicited private outreach.
 
 ## Manual measurements after release
 

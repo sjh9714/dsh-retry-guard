@@ -22,5 +22,5 @@ The [report-inspired checks](reported-cases.md) demonstrate both coverage and
 limits through the pinned DSH runtime. The old Bash same-mode permission errors
 are no longer reproduced on 0.2.0-rc.2. Changing arguments, interleaved successful
 calls and ordinary nonzero Bash exits are not stopped by this detector.
-Use actual installation and 48-hour use in the [trial](trial.md) to decide whether
-to continue. Do not infer demand from DSH's own stars.
+Use actual installation and continued-use [feedback](trial.md) to guide priorities
+while building in public. Do not infer demand from DSH's own stars.
