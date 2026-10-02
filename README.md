@@ -7,10 +7,11 @@ Pause before the next model step after three identical DSH tool errors.
 [20-second recording](docs/assets/demo.mp4): real DSH Web, **scripted model**, no API key.
 The demonstration uses a deliberately failing local tool, not a production AI model.
 
-Download the `.tgz` from the [alpha release](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1), then install it:
+In DSH, open **Plugins → Add plugin**, paste this URL, click **Install**, then
+**Enable now**:
 
-```sh
-dsh plugin --profile web add ./dsh-retry-guard-0.1.0-alpha.1.tgz
+```text
+https://github.com/sjh9714/dsh-retry-guard/releases/download/v0.1.0-alpha.1/dsh-retry-guard-0.1.0-alpha.1.tgz
 ```
 
 **Supported target: DSH Web 0.2.0-rc.2 · Node.js 24.** Early prototype, MIT.
@@ -18,66 +19,69 @@ Unofficial community plugin; independently maintained and not endorsed by DeepSe
 **Default: observe. Opt-in: pause.** The plugin requires no separate account,
 API key or network connection. Installing dependencies requires registry access.
 
-## Install and try
+## Install in your DSH Web
 
 Requires an existing **DSH Web 0.2.0-rc.2** installation on **Node.js 24**.
-Download `dsh-retry-guard-0.1.0-alpha.1.tgz` and `SHA256SUMS` from the
+The released archive contains built JavaScript. You do not need Git, pnpm, a
+source checkout, or a build to install it. There is no npm release yet.
+
+1. Open **Plugins → Add plugin**. Paste the full archive URL above into
+   **Package name or address** and click **Install**.
+2. Wait for the installed screen, then click **Enable now**. Installing the
+   files alone does not enable the plugin. Keep this screen open until enabled.
+3. In **Plugins**, open the **dsh-retry-guard** bundle, then its
+   **dsh-retry-guard** component (**Configure**).
+4. Leave **Observe** selected to see notices while work continues. To stop
+   repeated failures, choose **Pause** and click **Save settings**.
+5. Continue working in your normal DSH conversation. You do not need to invoke
+   Retry Guard with a command.
+
+This screen-based installation and immediate activation were verified in a fresh
+DSH profile on 2026-10-02. The same installation passed the observe, pause and
+resume checks. See [what was tested](docs/verification.md#installation-usability-check).
+
+<details>
+<summary>Alternative: install from the terminal</summary>
+
+Download the archive and `SHA256SUMS` from the
 [alpha release](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1).
-From the download directory, install the archive with the command above.
-The release includes built JavaScript; no source checkout or build is required.
-There is no npm release yet.
-
-To build from source instead, use pnpm 11.24.0:
+From the download directory:
 
 ```sh
-git clone https://github.com/sjh9714/dsh-retry-guard.git
-cd dsh-retry-guard
-pnpm install --frozen-lockfile
-pnpm check
-pnpm pack --pack-destination artifacts
-dsh plugin --profile web add ./artifacts/dsh-retry-guard-0.1.0-alpha.1.tgz
+dsh plugin --profile web add ./dsh-retry-guard-0.1.0-alpha.1.tgz
 ```
 
-Restart DSH Web after a CLI installation. In **Plugins**, open the installed
-`dsh-retry-guard` bundle, then its **dsh-retry-guard component** (Configure).
-Choose **Pause** and **Save settings** when ready. Installation starts in Observe.
-The package contains built JavaScript and a `dsh.bundle` manifest pointing to
-`cordis.patch.yml`; `dsh.bundle` is a package manifest field, not a separate file
-extension. Installing the archive does not build source on your machine.
+Restart DSH Web after a CLI installation, then open the settings as above.
+The archive's `dsh.bundle` manifest points to `cordis.patch.yml`; this is a
+package manifest field, not a separate file extension.
 
-For an isolated demo using the pinned DSH version from this repository:
+</details>
 
-```sh
-pnpm demo       # terminal comparison; writes artifacts/demo-results.json
-pnpm demo:web   # opens a local server URL in the terminal; no model API key
-```
+## What happens when a failure repeats?
 
-Open the printed local URL and accept DSH's welcome notice. Set Retry Guard to
-Pause as above. Start **New Session**, select **Local fixture · no API key** from
-the model picker, then send `run fixture`. After three failures, inspect the
-Retry Guard report. Send `fixture repair` to exercise a successful new call.
+For example, a tool repeatedly returns the same missing-argument error with the
+same arguments. On the third consecutive failure:
 
-The Web demo uses `.work/demo-home`, independently of your usual DSH home, and
-disables paid model routes in its own overlay. The fixture makes no network,
-shell or file calls. Press Ctrl+C in its terminal to stop it. Do not share the
-access token in its local URL.
+- **Observe:** work continues and a Retry Guard notice appears when the turn ends.
+- **Pause:** the next model step does not start. The notice shows the failed tool,
+  count, time, and original event/call references.
+- **After repair:** inspect the original failure in **Trajectory**, fix the cause,
+  then send a new instruction in **Chat**. Failed calls are not replayed automatically.
 
-The same terminal script gives these measured counts:
+The plugin notices a repeated error; it does not work out or fix its cause.
+The notice currently gives record references, not a one-click inspector link.
+See the [error-record walkthrough](docs/demo.md#inspect-the-original-error).
 
-| Configuration | Tool calls | Model requests before completion/pause |
-| --- | ---: | ---: |
-| Guard not mounted | 6 | 7 |
-| Observe (default) | 6 | 7 |
-| Pause | 3 | 3 |
+You can watch the recording above without installing development tools. To run
+our exact keyless demonstration yourself, follow the separate
+[developer demo guide](docs/demo.md). Its scripted model and failing tool belong
+to the source checkout and are not included in the normal plugin installation.
 
-A new human instruction then permits one repaired successful call. These are
-counts from one deterministic fixture, not a general cost or token-saving claim.
-See [verification scope](docs/verification.md) and [alternatives](docs/alternatives.md).
-
-Public users have reported repeated missing-argument and MCP errors. We tested
-small cases through DSH's actual validators and MCP client, including cases the
-guard cannot stop. See [reports, measured results and limits](docs/reported-cases.md),
-or run `pnpm reproduce:reports` without an API key.
+In that one deterministic fixture, Observe runs 6 tool calls / 7 model requests;
+Pause runs 3 / 3, followed by one successful call after a new repair instruction.
+These are fixture counts, not a general cost-saving claim. See
+[verification scope](docs/verification.md), [alternatives](docs/alternatives.md),
+and [reported failures and detection limits](docs/reported-cases.md).
 
 ## Behavior
 
@@ -147,18 +151,7 @@ mode, so check it before starting work.
 
 ## Development
 
-```sh
-pnpm test       # Node test runner; real DSH loop, scripted model
-pnpm reproduce:reports # real validators/MCP client; scripted model, stub shell
-pnpm typecheck
-pnpm build     # distributable lib/ + declarations
-pnpm test:web  # with pnpm demo:web running; requires Playwright Chromium
-```
-
-For repeatable Web checks, start `pnpm demo:web > .work/demo-web.log 2>&1` after
-creating `.work`. Browser installation, if needed, is the explicit command
-`pnpm exec playwright install chromium`. Optional `pnpm demo:record` also needs
-ffmpeg and records the actual Web UI, using the saved test browser state.
+See [developer setup, keyless demo and Web checks](docs/demo.md).
 
 The detector is in `src/core.ts`; the DSH adapter and durable notice are in
 `src/index.ts`; settings and the visible report are in `src/client/index.tsx`.

@@ -27,7 +27,7 @@ body:
     id: install-time
     attributes:
       label: Minutes to a working plugin
-      description: Start when you open the installation instructions. Include finding settings and running the keyless demo. Say 'could not install' if blocked.
+      description: Start when you open the installation instructions. Include enabling the plugin, finding settings and saving your chosen mode. Record optional source-demo setup time separately. Say 'could not install' if blocked.
     validations:
       required: true
   - type: textarea

@@ -123,3 +123,40 @@ The [volunteer invitation](https://github.com/deepseek-ai/deepseek-harness/discu
 is published, but no completed installation trials or 48-hour retention results
 have been recorded. No npm package or awesome-list PR has been published.
 Feature expansion remains gated on the [trial](trial.md).
+
+## Installation usability check
+
+On **2026-10-02**, installed the unchanged public alpha.1 archive by pasting its
+GitHub Release asset URL into **Plugins → Add plugin → Package name or address**
+in a fresh DSH Web 0.2.0-rc.2 profile. Clicked **Install**, waited for **Enable now**,
+and enabled it in the same browser flow. The configuration form became available
+without restarting Web and showed **Observe** by default.
+
+An earlier interrupted attempt closed the install screen before **Enable now**.
+The package files were present but the component remained off and its form waited
+for settings. This is why the user guide makes activation a separate required
+step; downloading/installing alone is not a successful end-to-end setup.
+
+Ran the existing full browser check against the GUI-installed public artifact.
+At **05:40:38 UTC**, it passed Observe (6 tool calls / 7 steps), Pause (3 / 3),
+new human instruction → one repaired successful call, unchanged original event
+prefix, settings saved across reload and invalid-limit rejection. There were
+zero browser errors. Also opened Trajectory, selected a failed TOOL row and
+read the original demo error under Result in the native inspector. The model/tool
+were local scripted fixtures. This is a
+technical installation check by the maintainer, not a five-minute user trial or
+48-hour retention result.
+
+The screen installation path follows DSH's pinned
+[plugin manager guide](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/packages/client/ui-plugin-manager/README.md)
+and [bundle publishing format](https://github.com/deepseek-ai/deepseek-harness/blob/dsh-v0.2.0-rc.2/docs/user/develop/basic/publish.md).
+These establish official support, not how frequently users choose this method.
+No installation-method usage statistics were verified.
+
+The normal installation guide and source-only demo are now separate. No runtime
+code or alpha.1 release asset changed. A direct report-to-inspector button remains
+unimplemented: the pinned `TurnTailOwnerProps` contract supplies `turn`, `seq`
+and `openFile`, while `inspectCall` is on the native view/tool-node contracts.
+No supported navigation callback was found for this report slot. The manual
+Trajectory route remains documented; compatibility with other DSH versions is
+not inferred.

@@ -19,9 +19,11 @@ repository's **Issues → New issue** menu, then update the same issue after
 48 hours. No account beyond the one used for GitHub feedback is needed to report;
 the plugin itself needs no separate account. Do not post sensitive work details.
 
-1. Start the timer when the participant receives the archive and instructions.
-2. Let them install, find the settings, explain observe versus pause and run the
-   keyless example. Record time to a running plugin and any help required.
+1. Start the timer when the participant opens the installation instructions.
+2. Let them install and enable the plugin, find its settings, explain Observe
+   versus Pause, and save their chosen mode. Record time to that working setup
+   and any help required. The source-only [keyless demo](demo.md) is optional;
+   record its separate setup time if tried, not as ordinary plugin installation.
 3. Ask them to use it in their normal work only if comfortable. At 48 hours,
    confirm whether it is still enabled **and has been used**, any false pauses,
    and whether they would keep it. Installed-but-unused is not retained use.
