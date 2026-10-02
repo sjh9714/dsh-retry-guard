@@ -49,7 +49,10 @@ A [packaged public alpha](https://github.com/sjh9714/dsh-retry-guard/releases/ta
 provides the verified archive and demo to volunteers, without requiring a source
 build. It was published on **2026-10-02** and is labeled as an unvalidated alpha.
 The public download has passed an isolated DSH Web installation and core-flow
-check. npm publication is still pending. One introduction and volunteer invitation
+check. npm alpha.2 was published on 2026-10-02 and is the default installation
+route: `dsh-retry-guard@alpha`. A fresh Web installation by package name passed
+the same scripted core-flow checks. This is maintainer verification, not a
+participant trial. One introduction and volunteer invitation
 was published in the DSH **Show Your Plugins!** category on 2026-10-02.
 No awesome-list submission or X post has been made. Broader distribution and feature expansion wait
 for the trial result: a DSH use case, an eligible awesome-list submission, then

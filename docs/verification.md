@@ -160,3 +160,36 @@ and `openFile`, while `inspectCall` is on the native view/tool-node contracts.
 No supported navigation callback was found for this report slot. The manual
 Trajectory route remains documented; compatibility with other DSH versions is
 not inferred.
+
+## npm alpha.2 publication
+
+Published **dsh-retry-guard@0.1.0-alpha.2** to the public npm registry on
+**2026-10-02 at 05:50:02 UTC**, using publisher `jinhyuk9714` and the explicit
+`alpha` distribution tag. [npm package](https://www.npmjs.com/package/dsh-retry-guard/v/0.1.0-alpha.2).
+The source/package preparation revision is
+[a41484f](https://github.com/sjh9714/dsh-retry-guard/commit/a41484f).
+Public package publication is free under [npm's documented terms](https://docs.npmjs.com/about-npm/#sharing-packages-and-collaborating-with-others).
+
+This release updates installation instructions and packaging version only;
+all built detector, host, client and bundle patch bytes match the previously
+verified GitHub alpha.1. The 24 tests, typecheck, build and npm dry-run passed.
+The 11-file, 12,438-byte archive excludes development profiles, credentials,
+logs and demo fixtures. SHA-256:
+`d3d26b14591fbcdb6b1071227d367dd7fc6a88287d1c1a9722c0a4e8ac194ce8`.
+An unauthenticated registry read and tarball download matched the exact local
+archive bytes and npm's SHA-512 integrity metadata.
+
+A fresh disposable DSH Web profile installed `dsh-retry-guard@alpha` through
+**Plugins → Add plugin → Install → Enable now**. The installed package resolved
+to alpha.2, its runtime bytes matched, and default mode was Observe. At
+**05:51:49 UTC**, the full browser flow passed: Observe 6 calls / 7 steps,
+Pause 3 / 3, human repair one success, original events preserved, settings
+persisted, invalid limit rejected, zero browser errors. These results use the
+local scripted model/tool, not a paid provider or real-user retention trial.
+
+The registry readback showed both `alpha` and `latest` pointing to alpha.2,
+despite publishing with `--tag alpha`. An attempt to remove `latest` returned
+HTTP 403; the alias remains. The version is still a prerelease, and installation
+instructions explicitly use `@alpha` or the exact alpha.2 version. Do not treat
+`latest` as evidence of stable-release validation. No authentication or security
+settings were weakened to change the alias.
