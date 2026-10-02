@@ -7,10 +7,10 @@ Pause before the next model step after three identical DSH tool errors.
 [20-second recording](docs/assets/demo.mp4): real DSH Web, **scripted model**, no API key.
 The demonstration uses a deliberately failing local tool, not a production AI model.
 
-[Build the local archive](#install-and-try), then install it:
+Download the `.tgz` from the [alpha release](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1), then install it:
 
 ```sh
-dsh plugin --profile web add ./artifacts/dsh-retry-guard-0.1.0-alpha.1.tgz
+dsh plugin --profile web add ./dsh-retry-guard-0.1.0-alpha.1.tgz
 ```
 
 **Supported target: DSH Web 0.2.0-rc.2 · Node.js 24.** Early prototype, MIT.
@@ -20,8 +20,14 @@ API key or network connection. Installing dependencies requires registry access.
 
 ## Install and try
 
-There is no npm release yet. With Node.js 24 and pnpm 11.24.0, clone this
-repository, build the archive and install it into your DSH Web profile:
+Requires an existing **DSH Web 0.2.0-rc.2** installation on **Node.js 24**.
+Download `dsh-retry-guard-0.1.0-alpha.1.tgz` and `SHA256SUMS` from the
+[alpha release](https://github.com/sjh9714/dsh-retry-guard/releases/tag/v0.1.0-alpha.1).
+From the download directory, install the archive with the command above.
+The release includes built JavaScript; no source checkout or build is required.
+There is no npm release yet.
+
+To build from source instead, use pnpm 11.24.0:
 
 ```sh
 git clone https://github.com/sjh9714/dsh-retry-guard.git
