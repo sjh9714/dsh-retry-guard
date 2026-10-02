@@ -1,6 +1,6 @@
 # DSH Retry Guard
 
-Stop the next model step after the same tool fails three times in a row.
+Pause before the next model step after three identical DSH tool errors.
 
 ![Three identical failures pause the next step; a new instruction resumes after repair.](docs/assets/demo.gif)
 
@@ -68,10 +68,17 @@ A new human instruction then permits one repaired successful call. These are
 counts from one deterministic fixture, not a general cost or token-saving claim.
 See [verification scope](docs/verification.md) and [alternatives](docs/alternatives.md).
 
+Public users have reported repeated missing-argument and MCP errors. We tested
+small cases through DSH's actual validators and MCP client, including cases the
+guard cannot stop. See [reports, measured results and limits](docs/reported-cases.md),
+or run `pnpm reproduce:reports` without an API key.
+
 ## Behavior
 
 Within one agent and turn, three consecutive failed calls must have the same
 tool name, recursively key-sorted JSON arguments, and exact failure content.
+"Failed" means DSH marks the tool result `isError: true`. A Bash command returning
+exit code 1 is normally a successful tool execution in DSH and is **not counted**.
 Array order, strings, and failure details are significant. A successful call,
 changed arguments/error/tool, an excluded call, or a new turn breaks the chain.
 Excluded names are exact matches, not wildcards.
@@ -136,6 +143,7 @@ mode, so check it before starting work.
 
 ```sh
 pnpm test       # Node test runner; real DSH loop, scripted model
+pnpm reproduce:reports # real validators/MCP client; scripted model, stub shell
 pnpm typecheck
 pnpm build     # distributable lib/ + declarations
 pnpm test:web  # with pnpm demo:web running; requires Playwright Chromium
@@ -151,7 +159,7 @@ The detector is in `src/core.ts`; the DSH adapter and durable notice are in
 Dependencies are pinned in `pnpm-lock.yaml`.
 No dependency lifecycle scripts are needed for the detector tests.
 The [Check workflow](https://github.com/sjh9714/dsh-retry-guard/actions/workflows/ci.yml)
-runs type checks, tests, the build and the keyless terminal example on Node.js 24.
+runs type checks, tests, the build and both keyless terminal examples on Node.js 24.
 
 This is a validation alpha. We are looking for five DSH Web users to try installing
 it and report whether they still use it after 48 hours. See the

@@ -63,6 +63,13 @@ workflow covers the type checks, build, detector/loop tests and terminal fixture
 
 ## Reproduce
 
+The [report-inspired checks](reported-cases.md) add nine integration tests and
+nine scenarios in three modes through real DSH validators, Bash permission
+handling and a local MCP transport. Run `pnpm reproduce:reports` for fresh
+aggregate measurements. These fixtures use a scripted model and a stub shell;
+they do not replay the original user sessions. The production implementation
+and committed runtime files were unchanged by this validation work.
+
 ```sh
 pnpm install --frozen-lockfile
 pnpm check

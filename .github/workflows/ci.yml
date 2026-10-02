@@ -22,5 +22,6 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm demo
+      - run: pnpm reproduce:reports
       - name: Check committed distribution matches source
         run: git diff --exit-code -- lib/

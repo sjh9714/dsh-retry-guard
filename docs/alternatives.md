@@ -18,8 +18,9 @@ verified installation for one DSH version may reduce adoption friction. A
 successful polling loop is intentionally outside this rule. Changing error
 messages or alternating calls can evade it.
 
-The [reported repeated-work problem](https://github.com/deepseek-ai/deepseek-harness/discussions/6701)
-motivates investigation; it does not establish that every call in that incident
-had identical arguments and error content, or that this detector would stop it.
+The [report-inspired checks](reported-cases.md) demonstrate both coverage and
+limits through the pinned DSH runtime. The old Bash same-mode permission errors
+are no longer reproduced on 0.2.0-rc.2. Changing arguments, interleaved successful
+calls and ordinary nonzero Bash exits are not stopped by this detector.
 Use actual installation and 48-hour use in the [trial](trial.md) to decide whether
 to continue. Do not infer demand from DSH's own stars.
